@@ -1,0 +1,64 @@
+<app-masthead>
+  <button type="button" class="btn btn--ink" (click)="create()" [disabled]="creating()">
+    <span class="btn__glyph" aria-hidden="true">+</span> Nouvelle forme
+  </button>
+</app-masthead>
+
+<main class="library">
+  <section class="hero">
+    <h1 class="hero__title display misregister">Le<br />marbre</h1>
+    <div class="hero__aside">
+      <p class="hero__lede">
+        En imprimerie, <em>la forme</em> est la page de plomb composée et serrée, prête à passer
+        sous la presse. Ici reposent les vôtres&nbsp;: glissez des caractères, relisez l’épreuve,
+        donnez le bon à tirer.
+      </p>
+      <dl class="hero__stats mono">
+        <div>
+          <dt>Formes</dt>
+          <dd class="display">{{ stats().forms }}</dd>
+        </div>
+        <div>
+          <dt>Bons à tirer</dt>
+          <dd class="display">{{ stats().published }}</dd>
+        </div>
+        <div>
+          <dt>Tirages reçus</dt>
+          <dd class="display">{{ stats().submissions }}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  @if (error(); as message) {
+    <p class="library__error mono" role="alert">✕ {{ message }}</p>
+  }
+
+  @if (forms.error()) {
+    <p class="library__error mono" role="alert">
+      ✕ Le marbre est inaccessible — le backend Spring Boot tourne-t-il sur :8081&nbsp;?
+      <button type="button" class="btn btn--sm" (click)="forms.reload()">Réessayer</button>
+    </p>
+  }
+
+  <section class="grid" aria-label="Vos formes">
+    <button type="button" class="new-sheet" (click)="create()" [disabled]="creating()">
+      <span class="new-sheet__plus display" aria-hidden="true">+</span>
+      <span class="display new-sheet__label">Fondre une<br />nouvelle forme</span>
+      <span class="serif-italic muted">Une feuille blanche, prête à composer</span>
+    </button>
+
+    @for (form of forms.value(); track form.id; let i = $index) {
+      <app-form-card [form]="form" [index]="i" (deleted)="remove($event)" />
+    } @empty {
+      @if (forms.isLoading()) {
+        <p class="mono muted">Mise en place des formes…</p>
+      }
+    }
+  </section>
+</main>
+
+<footer class="colophon mono">
+  <span>Composé en Anybody, Newsreader &amp; IBM Plex Mono</span>
+  <span>Démo portfolio — Forthtilliath</span>
+</footer>

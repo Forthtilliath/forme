@@ -1,0 +1,73 @@
+:host {
+  display: block;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 260ms var(--ease-out);
+}
+:host(:hover),
+:host(:focus-within) {
+  transform: rotate(0deg) translateY(-4px);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  height: 100%;
+  padding: 1.4rem 1.4rem 1.1rem;
+  /* Bande d'encre en tete de feuille : la couleur choisie pour la forme */
+  border-top: 6px solid var(--accent);
+}
+
+.card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.card__folio {
+  color: var(--ink-faint);
+}
+
+.card__title-link {
+  text-decoration: none;
+}
+.card__title {
+  font-size: clamp(1.9rem, 3.2vw, 2.5rem);
+  transition: text-shadow 200ms var(--ease-out);
+}
+.card__title-link:hover .card__title,
+.card__title-link:focus-visible .card__title {
+  text-shadow: 0.05em 0.04em 0 var(--accent);
+}
+
+.card__desc {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--hairline);
+}
+.card__updated {
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+}
+
+.card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-top: 0.4rem;
+}
+.card__delete {
+  margin-left: auto;
+}

@@ -1,0 +1,39 @@
+@let f = form();
+<article class="card sheet">
+  <app-crop-marks />
+  <header class="card__head">
+    <span class="mono card__folio">N° {{ folio() }}</span>
+    <app-stamp [status]="f.status" />
+  </header>
+
+  <a class="card__title-link" [routerLink]="['/atelier', f.id]">
+    <h2 class="card__title display">{{ f.title }}</h2>
+  </a>
+  @if (f.description) {
+    <p class="card__desc">{{ f.description }}</p>
+  }
+
+  <p class="card__meta mono">
+    <span class="ink-dot" aria-hidden="true"></span>
+    {{ counts() }}
+  </p>
+  <p class="card__updated serif-italic">Retouchée {{ updated() }}</p>
+
+  <footer class="card__actions">
+    <a class="btn btn--sm btn--ink" [routerLink]="['/atelier', f.id]">Composer</a>
+    <a class="btn btn--sm" [routerLink]="['/atelier', f.id, 'tirages']">Tirages</a>
+    @if (f.status === 'published') {
+      <a class="btn btn--sm btn--ghost" [routerLink]="['/f', f.slug]" target="_blank" rel="noopener"
+        >Page ↗</a
+      >
+    }
+    <button
+      type="button"
+      class="btn btn--sm btn--ghost card__delete"
+      (click)="remove()"
+      [attr.aria-label]="'Supprimer ' + f.title"
+    >
+      ✕
+    </button>
+  </footer>
+</article>
