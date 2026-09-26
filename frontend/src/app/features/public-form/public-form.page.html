@@ -1,0 +1,52 @@
+<main class="public">
+  @if (form.hasValue()) {
+    @let f = form.value();
+    <article class="public__sheet sheet" [attr.data-ink]="f.ink">
+      <app-crop-marks />
+
+      @if (receipt(); as r) {
+        <section class="receipt" aria-live="polite">
+          <app-stamp status="published" label="Reçu" [slam]="true" class="receipt__stamp" />
+          <h1 class="display misregister receipt__title">Merci&nbsp;!</h1>
+          <p class="receipt__text">
+            Votre réponse à <em>{{ f.title }}</em> est bien arrivée à l’atelier.
+          </p>
+          <p class="mono receipt__folio">Tirage n° {{ folio(r.id) }}</p>
+          <button type="button" class="btn" (click)="again()">Envoyer une autre réponse</button>
+        </section>
+      } @else {
+        <header class="public__head">
+          <p class="mono public__kicker">Formulaire · /f/{{ f.slug }}</p>
+          <h1 class="display misregister public__title">{{ f.title }}</h1>
+          @if (f.description) {
+            <p class="public__desc">{{ f.description }}</p>
+          }
+          <p class="mono public__legend"><span class="pf-required">*</span> champ obligatoire</p>
+        </header>
+
+        @if (failure(); as message) {
+          <p class="public__failure mono" role="alert">✕ {{ message }}</p>
+        }
+
+        <app-printed-form
+          [fields]="f.fields"
+          [serverErrors]="serverErrors()"
+          [busy]="sending()"
+          (submitted)="send($event)"
+        />
+      }
+    </article>
+  } @else if (form.error()) {
+    <section class="public__missing">
+      <p class="display misregister">Page blanche</p>
+      <p class="serif-italic">Cette forme n’est pas — ou plus — sous presse.</p>
+    </section>
+  } @else {
+    <p class="mono public__loading">Mise sous presse…</p>
+  }
+
+  <footer class="public__colophon mono">
+    <span>Imprimé avec</span>
+    <app-logo [small]="true" />
+  </footer>
+</main>
