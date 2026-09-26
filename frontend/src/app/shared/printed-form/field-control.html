@@ -1,0 +1,123 @@
+@let f = field();
+@let err = error();
+@if (f.type === 'consent') {
+  <label class="pf-choice consent">
+    <input type="checkbox" [id]="inputId()" [formControl]="control()" [attr.aria-invalid]="!!err" />
+    <span
+      >{{ f.label }}
+      @if (f.required) {
+        <span class="pf-required" aria-hidden="true">*</span>
+      }
+    </span>
+  </label>
+} @else {
+  <label class="pf-label" [id]="labelId()" [attr.for]="inputId()">
+    {{ f.label }}
+    @if (f.required) {
+      <span class="pf-required" aria-hidden="true">*</span
+      ><span class="visually-hidden">(obligatoire)</span>
+    }
+  </label>
+
+  @switch (f.type) {
+    @case ('textarea') {
+      <textarea
+        class="pf-input"
+        [id]="inputId()"
+        [formControl]="control()"
+        [placeholder]="f.placeholder ?? ''"
+        [attr.maxlength]="f.rules?.maxLength ?? null"
+        [attr.aria-invalid]="!!err"
+      ></textarea>
+    }
+    @case ('select') {
+      <select
+        class="pf-input"
+        [id]="inputId()"
+        [formControl]="control()"
+        [attr.aria-invalid]="!!err"
+      >
+        <option [ngValue]="null">{{ f.placeholder || 'Choisir…' }}</option>
+        @for (option of f.options ?? []; track option.value) {
+          <option [ngValue]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    }
+    @case ('radio') {
+      <div class="pf-choices" role="radiogroup" [attr.aria-labelledby]="labelId()">
+        @for (option of f.options ?? []; track option.value) {
+          <label class="pf-choice">
+            <input
+              type="radio"
+              [name]="inputId()"
+              [value]="option.value"
+              [formControl]="control()"
+            />
+            {{ option.label }}
+          </label>
+        }
+      </div>
+    }
+    @case ('checkboxes') {
+      <app-checkbox-group [options]="f.options ?? []" [formControl]="control()" />
+    }
+    @case ('rating') {
+      <app-rating-input
+        [name]="inputId()"
+        [max]="f.rules?.max ?? 5"
+        [labelledBy]="labelId()"
+        [formControl]="control()"
+      />
+    }
+    @case ('number') {
+      <input
+        class="pf-input"
+        type="number"
+        [id]="inputId()"
+        [formControl]="control()"
+        [placeholder]="f.placeholder ?? ''"
+        [attr.min]="f.rules?.min ?? null"
+        [attr.max]="f.rules?.max ?? null"
+        [attr.aria-invalid]="!!err"
+      />
+    }
+    @case ('date') {
+      <input
+        class="pf-input"
+        type="date"
+        [id]="inputId()"
+        [formControl]="control()"
+        [attr.aria-invalid]="!!err"
+      />
+    }
+    @case ('email') {
+      <input
+        class="pf-input"
+        type="email"
+        autocomplete="email"
+        [id]="inputId()"
+        [formControl]="control()"
+        [placeholder]="f.placeholder ?? ''"
+        [attr.aria-invalid]="!!err"
+      />
+    }
+    @default {
+      <input
+        class="pf-input"
+        type="text"
+        [id]="inputId()"
+        [formControl]="control()"
+        [placeholder]="f.placeholder ?? ''"
+        [attr.maxlength]="f.rules?.maxLength ?? null"
+        [attr.aria-invalid]="!!err"
+      />
+    }
+  }
+}
+
+@if (f.help) {
+  <p class="pf-help">{{ f.help }}</p>
+}
+@if (err) {
+  <p class="pf-error" role="alert">{{ err }}</p>
+}
