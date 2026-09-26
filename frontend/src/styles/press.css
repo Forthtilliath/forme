@@ -1,0 +1,221 @@
+/* Pieces d'imprimerie reutilisees partout : boutons-blocs, feuilles, tampons, pastilles. */
+
+/* ---------------------------------------------------------------- Boutons : blocs de plomb */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1em 0.55em;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--sheet);
+  box-shadow: var(--press);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 90ms var(--ease-out),
+    box-shadow 90ms var(--ease-out),
+    background-color 120ms;
+}
+.btn:hover {
+  background: var(--sheet-shade);
+}
+/* Enfoncer le bloc : il vient toucher le papier */
+.btn:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ink);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn--ink {
+  background: var(--accent);
+  color: var(--sheet);
+}
+.btn--ink:hover {
+  background: color-mix(in oklab, var(--accent) 88%, var(--ink));
+}
+.btn--ghost {
+  border-color: transparent;
+  box-shadow: none;
+  background: transparent;
+}
+.btn--ghost:hover {
+  background: var(--accent-wash);
+}
+.btn--sm {
+  padding: 0.4em 0.7em 0.35em;
+  font-size: 0.6875rem;
+}
+.btn__glyph {
+  font-family: var(--font-display);
+  font-size: 1.15em;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* ---------------------------------------------------------------- Feuille de papier */
+
+.sheet {
+  position: relative;
+  background: var(--sheet);
+  box-shadow:
+    0 1px 0 var(--hairline),
+    0 18px 36px -24px rgb(27 25 21 / 0.45);
+}
+
+/* ---------------------------------------------------------------- Traits de coupe */
+
+.crop-marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.crop-marks i {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  --len: 14px;
+}
+.crop-marks i::before,
+.crop-marks i::after {
+  content: '';
+  position: absolute;
+  background: var(--ink);
+}
+.crop-marks i::before {
+  width: var(--len);
+  height: 1px;
+}
+.crop-marks i::after {
+  width: 1px;
+  height: var(--len);
+}
+.crop-marks i:nth-child(1) {
+  top: -22px;
+  left: -22px;
+}
+.crop-marks i:nth-child(1)::before {
+  bottom: 0;
+  left: 0;
+}
+.crop-marks i:nth-child(1)::after {
+  top: 0;
+  right: 0;
+}
+.crop-marks i:nth-child(2) {
+  top: -22px;
+  right: -22px;
+}
+.crop-marks i:nth-child(2)::before {
+  bottom: 0;
+  right: 0;
+}
+.crop-marks i:nth-child(2)::after {
+  top: 0;
+  left: 0;
+}
+.crop-marks i:nth-child(3) {
+  bottom: -22px;
+  left: -22px;
+}
+.crop-marks i:nth-child(3)::before {
+  top: 0;
+  left: 0;
+}
+.crop-marks i:nth-child(3)::after {
+  bottom: 0;
+  right: 0;
+}
+.crop-marks i:nth-child(4) {
+  bottom: -22px;
+  right: -22px;
+}
+.crop-marks i:nth-child(4)::before {
+  top: 0;
+  right: 0;
+}
+.crop-marks i:nth-child(4)::after {
+  bottom: 0;
+  left: 0;
+}
+
+/* ---------------------------------------------------------------- Tampons encreurs */
+
+.stamp {
+  display: inline-block;
+  padding: 0.3em 0.6em 0.2em;
+  border: 3px double currentColor;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 110%;
+  font-variation-settings: 'wdth' 110;
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+  mix-blend-mode: multiply;
+  -webkit-mask-image: var(--worn);
+  mask-image: var(--worn);
+  -webkit-mask-size: 160px;
+  mask-size: 160px;
+}
+.stamp--draft {
+  color: var(--ink-faint);
+}
+.stamp--slam {
+  animation: stamp-slam 520ms var(--ease-slam) both;
+}
+
+@keyframes stamp-slam {
+  0% {
+    opacity: 0;
+    transform: rotate(-14deg) scale(2.4);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(-5deg) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-6deg) scale(1);
+  }
+}
+
+/* ---------------------------------------------------------------- Pastilles d'encre */
+
+.ink-dot {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.15);
+}
+
+/* Passage sous presse : la feuille s'ecrase puis se releve, encre fraiche */
+@keyframes press-in {
+  0% {
+    transform: translateY(-6px) scaleY(1.01);
+    filter: brightness(1.04);
+  }
+  45% {
+    transform: translateY(2px) scaleY(0.985);
+  }
+  100% {
+    transform: none;
+    filter: none;
+  }
+}
+.press-in {
+  animation: press-in 380ms var(--ease-out) both;
+}
