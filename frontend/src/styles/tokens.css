@@ -1,0 +1,58 @@
+:root {
+  /* Papiers */
+  --paper: #ebe3d2;
+  --paper-deep: #ddd2bc;
+  --sheet: #f7f2e7;
+  --sheet-shade: #efe8d9;
+
+  /* Encres */
+  --ink: #1b1915;
+  --ink-soft: #4c463c;
+  --ink-faint: #8a8271;
+  --hairline: rgb(27 25 21 / 0.16);
+  --hairline-strong: rgb(27 25 21 / 0.42);
+
+  --vermillon: #e0402a;
+  --outremer: #2c45d4;
+  --sapin: #1b6a4c;
+  --prune: #7c2a5d;
+
+  /* Encre active : surchargee par [data-ink] (couleur choisie pour chaque forme) */
+  --accent: var(--vermillon);
+  --accent-wash: color-mix(in oklab, var(--accent) 12%, transparent);
+
+  --danger: #b3261e;
+
+  /* Caracteres */
+  --font-display: 'Anybody', 'Arial Narrow', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+  --font-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+
+  /* Relief typographique : le decalage d'un bloc de plomb sur le papier */
+  --press: 3px 3px 0 var(--ink);
+  --press-lg: 6px 6px 0 var(--ink);
+
+  --radius: 2px;
+  --gutter: clamp(16px, 3vw, 40px);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-slam: cubic-bezier(0.3, 1.6, 0.5, 1);
+
+  /* Grain de papier : bruit fractal SVG, multiplie par-dessus la page */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .09 0 0 0 0 .07 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* Usure de l'encre des tampons : masque a trous irreguliers */
+  --worn: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1 1 1 1 1 1 0 1 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+}
+
+[data-ink='vermillon'] {
+  --accent: var(--vermillon);
+}
+[data-ink='outremer'] {
+  --accent: var(--outremer);
+}
+[data-ink='sapin'] {
+  --accent: var(--sapin);
+}
+[data-ink='prune'] {
+  --accent: var(--prune);
+}
