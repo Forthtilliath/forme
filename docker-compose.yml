@@ -1,0 +1,48 @@
+# Demo complete : `docker compose up --build` puis http://localhost:8088
+# Dev local     : `docker compose up -d db` puis `npm run dev` (voir README).
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: formbuilder
+      POSTGRES_USER: formbuilder
+      POSTGRES_PASSWORD: formbuilder
+    ports:
+      # 5435 sur l'hote : 5432/5433 sont pris par des PostgreSQL natifs, 5434 par boardgameshop.
+      - "5435:5432"
+    volumes:
+      - formbuilder-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U formbuilder -d formbuilder"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/formbuilder
+      DB_USER: formbuilder
+      DB_PASSWORD: formbuilder
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health | grep -q UP"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "8088:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  formbuilder-db:
