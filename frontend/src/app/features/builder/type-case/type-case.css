@@ -43,16 +43,27 @@
   padding: 0.55rem 0.6rem 0.5rem 0.9rem;
   border: 0;
   border-radius: 1px;
-  background: linear-gradient(160deg, var(--sheet) 0%, var(--paper-deep) 100%);
+  /* Fond toujours opaque : animer depuis un fond transparent laissait voir le tiroir noir */
+  background: var(--sheet);
+  isolation: isolate;
   text-align: left;
   cursor: grab;
-  transition:
-    transform 120ms var(--ease-out),
-    background 120ms;
+  transition: transform 120ms var(--ease-out);
+}
+/* Patine du plomb : le degrade vit sur un calque dont seule l'opacite s'anime */
+.sort::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(160deg, var(--sheet) 0%, var(--paper-deep) 100%);
+  transition: opacity 160ms var(--ease-out);
 }
 .sort:hover {
-  background: var(--sheet);
   transform: translateY(-2px);
+}
+.sort:hover::before {
+  opacity: 0;
 }
 .sort:active {
   cursor: grabbing;
