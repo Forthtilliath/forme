@@ -1,0 +1,70 @@
+@let form = store.form();
+<header class="bar">
+  <div class="bar__brand">
+    <app-logo [small]="true" />
+    <a routerLink="/" class="bar__back mono">← Le marbre</a>
+  </div>
+
+  <div class="bar__title">
+    <h1 class="display">{{ form?.title || 'Sans titre' }}</h1>
+    @if (form) {
+      <app-stamp [status]="form.status" [slam]="published()" />
+    }
+  </div>
+
+  <p
+    class="bar__save mono"
+    [class.bar__save--warn]="store.issues().size > 0 || store.saveState() === 'error'"
+    role="status"
+    aria-live="polite"
+  >
+    @if (saveLabel(); as label) {
+      {{ label }}
+    } @else {
+      ✓ Sec — enregistré à {{ store.savedAt() | date: 'HH:mm:ss' }}
+    }
+  </p>
+
+  <nav class="bar__views" aria-label="Vue de l'atelier">
+    @for (v of views; track v.key) {
+      <button
+        type="button"
+        class="bar__view"
+        [attr.aria-pressed]="view() === v.key"
+        (click)="view.set(v.key)"
+      >
+        <span aria-hidden="true">{{ v.glyph }}</span> {{ v.label }}
+      </button>
+    }
+  </nav>
+
+  <div class="bar__actions">
+    @if (form) {
+      <a class="btn btn--sm" [routerLink]="['/atelier', form.id, 'tirages']"
+        >Tirages · {{ form.submissionCount }}</a
+      >
+      @if (published()) {
+        <a
+          class="btn btn--sm btn--ghost"
+          [routerLink]="['/f', form.slug]"
+          target="_blank"
+          rel="noopener"
+          >Page ↗</a
+        >
+      }
+      <button
+        type="button"
+        class="btn"
+        [class.btn--ink]="!published()"
+        [disabled]="store.publishing()"
+        (click)="store.togglePublished()"
+      >
+        {{ published() ? 'Retirer de la presse' : 'Bon à tirer' }}
+      </button>
+    }
+  </div>
+
+  @if (publishError(); as message) {
+    <p class="bar__error mono" role="alert">✕ {{ message }}</p>
+  }
+</header>

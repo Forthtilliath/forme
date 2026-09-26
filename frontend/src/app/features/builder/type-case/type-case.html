@@ -1,0 +1,52 @@
+<aside class="case" aria-labelledby="case-title">
+  <h2 id="case-title" class="case__title display">La casse</h2>
+  <p class="case__hint serif-italic">
+    Glissez un caractère dans le composteur, ou cliquez pour l’insérer.
+  </p>
+
+  @for (row of rows; track row.key) {
+    <section class="case__row">
+      <h3 class="case__row-title mono">{{ row.title }}</h3>
+      <div
+        class="case__drawer"
+        cdkDropList
+        id="type-case-{{ row.key }}"
+        cdkDropListSortingDisabled
+        [cdkDropListEnterPredicate]="refuseDrop"
+      >
+        @for (sort of row.sorts; track sort.type) {
+          <button
+            type="button"
+            class="sort"
+            cdkDrag
+            [cdkDragData]="sort.type"
+            (cdkDragStarted)="dragging.set(sort.type)"
+            (cdkDragEnded)="dragging.set(null)"
+            (click)="add(sort.type)"
+            [attr.aria-label]="'Ajouter : ' + sort.label"
+          >
+            <span class="sort__nick" aria-hidden="true"></span>
+            <span class="sort__glyph" aria-hidden="true">{{ sort.glyph }}</span>
+            <span class="sort__label mono">{{ sort.label }}</span>
+            <span class="sort__hint">{{ sort.hint }}</span>
+
+            <div *cdkDragPlaceholder class="drop-line" aria-hidden="true">
+              <span class="mono">{{ sort.label }} ici</span>
+            </div>
+            <div *cdkDragPreview class="sort sort--preview">
+              <span class="sort__nick" aria-hidden="true"></span>
+              <span class="sort__glyph">{{ sort.glyph }}</span>
+              <span class="sort__label mono">{{ sort.label }}</span>
+            </div>
+          </button>
+          @if (dragging() === sort.type) {
+            <div class="sort sort--ghost" aria-hidden="true">
+              <span class="sort__glyph">{{ sort.glyph }}</span>
+              <span class="sort__label mono">{{ sort.label }}</span>
+            </div>
+          }
+        }
+      </div>
+    </section>
+  }
+</aside>

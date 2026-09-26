@@ -1,0 +1,98 @@
+@let form = store.form();
+<div class="stick sheet">
+  <app-crop-marks />
+
+  <header class="stick__head">
+    <p class="mono stick__kicker">Composteur · {{ store.fields().length }} ligne(s)</p>
+    <h2 class="stick__title display">{{ form?.title || 'Sans titre' }}</h2>
+    @if (form?.description) {
+      <p class="stick__desc serif-italic">{{ form?.description }}</p>
+    }
+  </header>
+
+  <ol
+    class="stick__lines"
+    cdkDropList
+    id="composing-stick"
+    [cdkDropListData]="store.fields()"
+    (cdkDropListDropped)="dropped($event)"
+    aria-label="Champs composés — Alt+↑/↓ pour déplacer, Suppr pour retirer"
+  >
+    @for (field of store.fields(); track field.id; let i = $index) {
+      @let sort = sortOf(field.type);
+      @let issue = store.issues().get(field.id);
+      <li
+        class="line"
+        cdkDrag
+        [cdkDragData]="field"
+        [class.line--selected]="store.selectedId() === field.id"
+        [class.line--section]="field.type === 'section'"
+        [class.line--issue]="!!issue"
+      >
+        <div *cdkDragPlaceholder class="line-placeholder" aria-hidden="true"></div>
+
+        <span class="line__number mono" aria-hidden="true">{{ lineNumber(i) }}</span>
+        <button type="button" class="line__handle" cdkDragHandle aria-label="Déplacer">⠿</button>
+
+        <button
+          type="button"
+          class="line__body"
+          (click)="store.selectedId.set(field.id)"
+          [attr.aria-pressed]="store.selectedId() === field.id"
+        >
+          <span class="line__glyph" aria-hidden="true">{{ sort.glyph }}</span>
+          <span class="line__text">
+            <span class="line__label" [class.display]="field.type === 'section'">
+              {{ field.label || '(libellé vide)' }}
+              @if (field.required) {
+                <span class="line__req" title="Obligatoire">*</span>
+              }
+            </span>
+            <span class="line__meta mono">
+              {{ sort.label }}
+              @if (field.type !== 'section') {
+                · <code>{{ field.name }}</code>
+              }
+              @if (field.width === 'half') {
+                · ½ ligne
+              }
+            </span>
+            @if (summary(field); as s) {
+              <span class="line__summary">{{ s }}</span>
+            }
+            @if (issue) {
+              <span class="line__issue mono" role="status">⚠ {{ issue }}</span>
+            }
+          </span>
+        </button>
+
+        <span class="line__tools">
+          <button
+            type="button"
+            class="btn btn--ghost btn--sm"
+            (click)="store.duplicate(field.id)"
+            title="Dupliquer (Ctrl+D)"
+            aria-label="Dupliquer"
+          >
+            ⧉
+          </button>
+          <button
+            type="button"
+            class="btn btn--ghost btn--sm"
+            (click)="store.remove(field.id)"
+            title="Retirer (Suppr)"
+            aria-label="Retirer"
+          >
+            ✕
+          </button>
+        </span>
+      </li>
+    } @empty {
+      <li class="stick__empty">
+        <span class="stick__empty-glyph display" aria-hidden="true">←</span>
+        <p class="display">Composteur vide</p>
+        <p class="serif-italic muted">Glissez un caractère depuis la casse — ou cliquez dessus.</p>
+      </li>
+    }
+  </ol>
+</div>

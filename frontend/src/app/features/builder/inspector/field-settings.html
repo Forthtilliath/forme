@@ -1,0 +1,101 @@
+@let f = field();
+<section class="panel">
+  <header class="panel__head">
+    <h2 class="panel__title display">Réglages</h2>
+    <span class="panel__kicker mono"
+      >Ligne {{ index() + 1 }} · {{ sort().glyph }} {{ sort().label }}</span
+    >
+  </header>
+
+  <fieldset class="group">
+    <legend>Texte</legend>
+    <label class="ctl">
+      <span class="ctl__label">{{ isSection() ? 'Intertitre' : 'Libellé' }}</span>
+      <input class="ctl__input" [value]="f.label" (input)="set({ label: text($event) })" />
+    </label>
+
+    @if (!isSection()) {
+      <label class="ctl">
+        <span class="ctl__label">Nom technique</span>
+        <input
+          class="ctl__input ctl__input--mono"
+          [value]="f.name"
+          spellcheck="false"
+          (input)="set({ name: text($event) })"
+          [attr.aria-invalid]="!!issue()"
+        />
+        <span class="ctl__hint"
+          >Clé dans le JSON des réponses. Suit le libellé tant que vous ne la modifiez pas.</span
+        >
+      </label>
+      @if (hasPlaceholder()) {
+        <label class="ctl">
+          <span class="ctl__label">Texte d’exemple</span>
+          <input
+            class="ctl__input"
+            [value]="f.placeholder ?? ''"
+            (input)="set({ placeholder: optional($event) })"
+          />
+        </label>
+      }
+      <label class="ctl">
+        <span class="ctl__label">Aide</span>
+        <textarea
+          class="ctl__input"
+          [value]="f.help ?? ''"
+          (input)="set({ help: optional($event) })"
+        ></textarea>
+      </label>
+    }
+    @if (issue() ?? serverIssue(); as message) {
+      <p class="ctl__error" role="alert">⚠ {{ message }}</p>
+    }
+  </fieldset>
+
+  @if (!isSection()) {
+    <fieldset class="group">
+      <legend>Mise en page</legend>
+      <label class="toggle">
+        <span class="ctl__label">Obligatoire</span>
+        <input
+          type="checkbox"
+          role="switch"
+          [checked]="f.required"
+          (change)="set({ required: !f.required })"
+        />
+      </label>
+      <div class="segmented" role="radiogroup" aria-label="Largeur">
+        <label
+          ><input
+            type="radio"
+            name="width"
+            [checked]="f.width !== 'half'"
+            (change)="setWidth('full')"
+          /><span>Pleine ligne</span></label
+        >
+        <label
+          ><input
+            type="radio"
+            name="width"
+            [checked]="f.width === 'half'"
+            (change)="setWidth('half')"
+          /><span>Demi-ligne</span></label
+        >
+      </div>
+    </fieldset>
+
+    <app-rules-settings [field]="f" />
+
+    @if (hasOptions()) {
+      <app-options-editor [field]="f" />
+    }
+  }
+
+  <footer class="actions">
+    <button type="button" class="btn btn--sm" (click)="store.duplicate(f.id)">⧉ Dupliquer</button>
+    <button type="button" class="btn btn--sm" (click)="store.remove(f.id)">✕ Retirer</button>
+    <button type="button" class="btn btn--sm btn--ghost" (click)="store.selectedId.set(null)">
+      Réglages de la forme
+    </button>
+  </footer>
+</section>
