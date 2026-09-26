@@ -1,0 +1,65 @@
+.builder {
+  min-height: 100dvh;
+}
+
+.workbench {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr) 320px;
+  align-items: start;
+  gap: 2.5rem;
+  padding: 2.4rem var(--gutter) 5rem;
+}
+
+/* Colonnes laterales : restent a portee pendant qu'on fait defiler la feuille */
+.workbench__left,
+.workbench__right {
+  position: sticky;
+  top: 8.5rem;
+  max-height: calc(100dvh - 9.5rem);
+  overflow-y: auto;
+  /* Marge droite/basse : l'ombre « bloc de plomb » des boutons ne doit pas etre rognee */
+  padding: 0 10px 1.5rem 4px;
+  scrollbar-width: thin;
+}
+
+.workbench__stage {
+  min-width: 0;
+  /* Place pour les traits de coupe qui debordent de la feuille */
+  padding: 22px;
+}
+.workbench__stage > * {
+  display: block;
+}
+
+@media (max-width: 1280px) {
+  .workbench {
+    grid-template-columns: 220px minmax(0, 1fr) 280px;
+    gap: 1.5rem;
+  }
+}
+
+/* Tablette / mobile : tout s'empile, la casse devient un bandeau au-dessus de la feuille */
+@media (max-width: 1099px) {
+  .workbench {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .workbench__left,
+  .workbench__right {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+  .workbench__stage {
+    padding: 22px 12px;
+  }
+}
+
+.missing {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  padding: 18vh var(--gutter);
+}
+.missing__title {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+}

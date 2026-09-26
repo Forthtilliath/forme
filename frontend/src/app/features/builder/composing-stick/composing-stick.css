@@ -1,0 +1,186 @@
+.stick {
+  padding: 2rem clamp(1rem, 3vw, 2.4rem) 2.4rem;
+  /* Marge de composition : colonne des numeros de ligne */
+  background-image: linear-gradient(
+    to right,
+    transparent 3.1rem,
+    var(--accent) 3.1rem 3.2rem,
+    transparent 3.2rem
+  );
+  background-color: var(--sheet);
+}
+
+.stick__head {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 1.4rem 2.6rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px double var(--ink);
+}
+.stick__kicker {
+  color: var(--ink-faint);
+  font-size: 0.62rem;
+}
+.stick__title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--accent);
+}
+.stick__desc {
+  color: var(--ink-soft);
+}
+
+.stick__lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 12rem;
+}
+
+/* ---------------------------------------------------------------- Une ligne composee */
+
+.line {
+  display: grid;
+  grid-template-columns: 2.2rem 1.6rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--sheet);
+}
+.line__number {
+  color: var(--ink-faint);
+  font-size: 0.7rem;
+  text-align: right;
+  padding-right: 0.3rem;
+}
+.line__handle {
+  border: 0;
+  background: none;
+  color: var(--ink-faint);
+  font-size: 1.1rem;
+  cursor: grab;
+}
+.line__handle:hover {
+  color: var(--ink);
+}
+.line__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 0.75rem 0.4rem;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+.line__glyph {
+  flex: none;
+  width: 2rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ink-faint);
+  text-align: center;
+}
+.line__text {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.line__label {
+  font-size: 1.12rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.line__req {
+  color: var(--accent);
+  font-weight: 700;
+}
+.line__meta {
+  color: var(--ink-faint);
+  font-size: 0.62rem;
+}
+.line__meta code {
+  font-family: inherit;
+  text-transform: none;
+  color: var(--ink-soft);
+}
+.line__summary {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.line__issue {
+  color: var(--danger);
+  font-size: 0.64rem;
+  text-transform: none;
+}
+.line__tools {
+  display: flex;
+  opacity: 0;
+  transition: opacity 120ms;
+}
+.line:hover .line__tools,
+.line:focus-within .line__tools,
+.line--selected .line__tools {
+  opacity: 1;
+}
+
+.line--section .line__label {
+  font-size: 1.6rem;
+}
+.line--selected {
+  background: var(--accent-wash);
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+.line--selected .line__glyph {
+  color: var(--accent);
+}
+.line--issue {
+  box-shadow: inset 4px 0 0 var(--danger);
+}
+
+/* ---------------------------------------------------------------- Glisser-deposer */
+
+.line.cdk-drag-preview {
+  border: 2px solid var(--ink);
+  box-shadow: var(--press-lg);
+  transform: rotate(-1.5deg);
+}
+.line-placeholder {
+  height: 3.2rem;
+  border-top: 3px solid var(--accent);
+  background: var(--accent-wash);
+}
+.cdk-drop-list-dragging .line:not(.cdk-drag-placeholder) {
+  transition: transform 220ms var(--ease-out);
+}
+.cdk-drag-animating {
+  transition: transform 220ms var(--ease-out);
+}
+
+.stick__empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 3rem 1rem;
+  margin-left: 2.6rem;
+  border: 2px dashed var(--hairline-strong);
+  text-align: center;
+}
+.stick__empty-glyph {
+  font-size: 4rem;
+  color: var(--accent);
+  animation: nudge 1.6s ease-in-out infinite;
+}
+.stick__empty .display {
+  font-size: 1.8rem;
+}
+@keyframes nudge {
+  50% {
+    transform: translateX(-10px);
+  }
+}

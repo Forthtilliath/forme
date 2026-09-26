@@ -1,0 +1,39 @@
+@if (store.loadError(); as message) {
+  <main class="missing">
+    <p class="display missing__title misregister">Forme égarée</p>
+    <p class="serif-italic">{{ message }}</p>
+    <a class="btn" routerLink="/">← Retour au marbre</a>
+  </main>
+} @else {
+  <div class="builder" [attr.data-ink]="store.form()?.ink">
+    <app-builder-bar [(view)]="view" />
+
+    <div class="workbench" [class.workbench--compose]="view() === 'compose'" cdkDropListGroup>
+      <div class="workbench__left">
+        @if (view() === 'compose') {
+          <app-type-case />
+        } @else {
+          <app-line-index />
+        }
+      </div>
+
+      <section class="workbench__stage" aria-live="off">
+        @switch (view()) {
+          @case ('compose') {
+            <app-composing-stick class="press-in" />
+          }
+          @case ('proof') {
+            <app-proof-view class="press-in" />
+          }
+          @case ('plate') {
+            <app-plate-view class="press-in" />
+          }
+        }
+      </section>
+
+      <div class="workbench__right">
+        <app-inspector />
+      </div>
+    </div>
+  </div>
+}

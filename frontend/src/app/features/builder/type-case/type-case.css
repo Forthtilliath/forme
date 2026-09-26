@@ -1,0 +1,141 @@
+.case {
+  display: grid;
+  /* minmax(0, 1fr) : le bandeau defilant (mobile) ne doit pas elargir la colonne */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  align-content: start;
+}
+.case__title {
+  font-size: 2.2rem;
+}
+.case__hint {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.case__row-title {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--ink);
+  color: var(--ink-soft);
+  font-size: 0.6rem;
+}
+
+/* Tiroir de la casse : compartiments de bois sombre */
+.case__drawer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  padding: 6px;
+  background: var(--ink);
+  border-radius: var(--radius);
+}
+
+/* ---------------------------------------------------------------- Un caractere en plomb */
+
+.sort {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  justify-items: start;
+  gap: 0.1rem;
+  min-height: 88px;
+  padding: 0.55rem 0.6rem 0.5rem 0.9rem;
+  border: 0;
+  border-radius: 1px;
+  background: linear-gradient(160deg, var(--sheet) 0%, var(--paper-deep) 100%);
+  text-align: left;
+  cursor: grab;
+  transition:
+    transform 120ms var(--ease-out),
+    background 120ms;
+}
+.sort:hover {
+  background: var(--sheet);
+  transform: translateY(-2px);
+}
+.sort:active {
+  cursor: grabbing;
+}
+/* Le cran : l'encoche qui indique au typographe le sens du caractere */
+.sort__nick {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 4px;
+  height: 22px;
+  translate: 0 -50%;
+  background: var(--ink);
+  border-radius: 0 2px 2px 0;
+}
+.sort__glyph {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+}
+.sort__label {
+  font-size: 0.64rem;
+  font-weight: 600;
+}
+.sort__hint {
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.sort--ghost {
+  opacity: 0.35;
+  cursor: default;
+}
+.sort--preview {
+  width: 150px;
+  min-height: 72px;
+  box-shadow: var(--press-lg);
+  border: 2px solid var(--ink);
+  transform: rotate(-4deg);
+}
+
+/* Filet d'insertion : le placeholder que le CDK deplace dans le composteur */
+.drop-line {
+  display: flex;
+  align-items: center;
+  height: 2.6rem;
+  margin: 0.2rem 0;
+  padding-left: 3.4rem;
+  border-top: 3px solid var(--accent);
+  background: var(--accent-wash);
+  color: var(--accent);
+}
+/* ...mais tant qu'il est encore dans la casse, le fantome tient sa place */
+.case__drawer .drop-line {
+  display: none;
+}
+
+/* Tablette / mobile : chaque tiroir devient un bandeau horizontal qu'on fait defiler */
+@media (max-width: 1099px) {
+  .case {
+    gap: 0.6rem;
+  }
+  .case__title {
+    font-size: 1.6rem;
+  }
+  .case__hint,
+  .sort__hint {
+    display: none;
+  }
+  .case__drawer {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .sort {
+    flex: 0 0 108px;
+    min-height: 66px;
+  }
+  .sort__glyph {
+    font-size: 1.5rem;
+  }
+}
