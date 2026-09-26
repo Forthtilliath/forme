@@ -1,0 +1,71 @@
+<app-masthead />
+
+<main class="ledger-page" [attr.data-ink]="form.value()?.ink">
+  @if (form.hasValue()) {
+    @let f = form.value();
+    <header class="ledger-head">
+      <div>
+        <p class="mono ledger-head__kicker">Registre des tirages</p>
+        <h1 class="display misregister ledger-head__title">{{ f.title }}</h1>
+        <p class="serif-italic muted">
+          {{ rows().length }} réponse(s) · {{ columns().length }} colonne(s)
+        </p>
+      </div>
+      <app-stamp [status]="f.status" />
+      <div class="ledger-head__actions">
+        <a class="btn" [routerLink]="['/atelier', f.id]">← Composer</a>
+        @if (f.status === 'published') {
+          <a class="btn btn--ghost" [routerLink]="['/f', f.slug]" target="_blank" rel="noopener"
+            >Page publique ↗</a
+          >
+        }
+        <button
+          type="button"
+          class="btn btn--ink"
+          (click)="exportCsv()"
+          [disabled]="rows().length === 0"
+        >
+          ↧ Exporter en CSV
+        </button>
+      </div>
+    </header>
+
+    @if (rows().length) {
+      <div class="ledger-scroll" tabindex="0" role="region" aria-label="Tableau des réponses">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th scope="col" class="mono">N°</th>
+              <th scope="col" class="mono">Reçu le</th>
+              @for (col of columns(); track col.id) {
+                <th scope="col" class="mono">{{ col.label }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.id; let i = $index) {
+              <tr>
+                <td class="mono ledger__n">{{ rows().length - i }}</td>
+                <td class="ledger__date">{{ row.submittedAt | date: 'dd/MM/yy HH:mm' }}</td>
+                @for (cell of row.cells; track $index) {
+                  <td>{{ cell || '—' }}</td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="ledger-empty serif-italic">
+        Aucun tirage pour l’instant.
+        @if (f.status === 'draft') {
+          Donnez le bon à tirer pour recevoir des réponses.
+        }
+      </p>
+    }
+  } @else if (form.error()) {
+    <p class="mono ledger-error">✕ Forme introuvable. <a routerLink="/">Retour au marbre</a></p>
+  } @else {
+    <p class="mono">Ouverture du registre…</p>
+  }
+</main>

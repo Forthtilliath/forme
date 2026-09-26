@@ -1,0 +1,94 @@
+.public {
+  display: grid;
+  justify-items: center;
+  gap: 2.5rem;
+  min-height: 100dvh;
+  padding: clamp(2.5rem, 7vw, 5rem) 16px 2rem;
+}
+
+.public__sheet {
+  width: min(100%, 780px);
+  padding: clamp(1.5rem, 5vw, 3.4rem);
+  border-top: 10px solid var(--accent);
+}
+
+.public__head {
+  display: grid;
+  gap: 0.8rem;
+  margin-bottom: 2.4rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 3px double var(--ink);
+}
+.public__kicker {
+  color: var(--ink-faint);
+  font-size: 0.62rem;
+  text-transform: none;
+}
+.public__title {
+  font-size: clamp(2.8rem, 9vw, 5.2rem);
+  overflow-wrap: anywhere;
+}
+.public__desc {
+  max-width: 36rem;
+  color: var(--ink-soft);
+  font-size: 1.2rem;
+  font-style: italic;
+}
+.public__legend {
+  color: var(--ink-faint);
+  font-size: 0.6rem;
+}
+.public__failure {
+  margin-bottom: 1.6rem;
+  padding: 0.7rem 0.9rem;
+  border: 2px solid var(--danger);
+  color: var(--danger);
+  text-transform: none;
+}
+
+/* ---------------------------------------------------------------- Accuse de reception */
+
+.receipt {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+.receipt__stamp {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+.receipt__title {
+  font-size: clamp(3.5rem, 12vw, 7rem);
+}
+.receipt__text {
+  font-size: 1.25rem;
+}
+.receipt__text em {
+  color: var(--accent);
+}
+.receipt__folio {
+  color: var(--ink-soft);
+}
+
+.public__missing {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 12vh;
+  text-align: center;
+}
+.public__missing .display {
+  font-size: clamp(3.5rem, 12vw, 8rem);
+}
+.public__loading {
+  color: var(--ink-soft);
+}
+
+.public__colophon {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: end;
+  color: var(--ink-soft);
+  font-size: 0.62rem;
+}

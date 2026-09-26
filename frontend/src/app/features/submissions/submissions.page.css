@@ -1,0 +1,92 @@
+.ledger-page {
+  display: grid;
+  gap: 2rem;
+  padding: 2.4rem var(--gutter) 4rem;
+}
+
+.ledger-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem 2rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 3px double var(--ink);
+}
+.ledger-head__kicker {
+  color: var(--ink-faint);
+  font-size: 0.62rem;
+}
+.ledger-head__title {
+  margin: 0.3rem 0 0.5rem;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+}
+.ledger-head__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+/* ---------------------------------------------------------------- Livre de comptes */
+
+.ledger-scroll {
+  overflow-x: auto;
+  border: 2px solid var(--ink);
+  background: var(--sheet);
+  box-shadow: var(--press-lg);
+}
+.ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98rem;
+}
+.ledger th {
+  position: sticky;
+  top: 0;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper-deep);
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+.ledger td {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: top;
+  min-width: 8rem;
+  max-width: 22rem;
+}
+/* Filet rouge de marge, comme sur un registre */
+.ledger th:nth-child(2),
+.ledger td:nth-child(2) {
+  border-right: 2px solid var(--accent);
+}
+.ledger tbody tr:nth-child(even) {
+  background: color-mix(in oklab, var(--sheet) 70%, var(--paper));
+}
+.ledger tbody tr:hover {
+  background: var(--accent-wash);
+}
+.ledger__n {
+  min-width: 3rem !important;
+  color: var(--ink-faint);
+  text-align: right;
+}
+.ledger__date {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.ledger-empty {
+  padding: 3rem 1rem;
+  border: 2px dashed var(--hairline-strong);
+  color: var(--ink-soft);
+  font-size: 1.2rem;
+  text-align: center;
+}
+.ledger-error {
+  color: var(--danger);
+}
